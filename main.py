@@ -1,29 +1,29 @@
-import logging
-import os
-from flask import Flask, jsonify
+# Importing flask module in the project is mandatory
+# An object of Flask class is our WSGI application.
+from flask import Flask
 
-# Configure logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
-
+# Flask constructor takes the name of 
+# current module (__name__) as argument.
 app = Flask(__name__)
 
+# The route() function of the Flask class is a decorator, 
+# which tells the application which URL should call 
+# the associated function.
 @app.route('/')
-def root():
-    logger.info("Root endpoint was called")
-    return jsonify({"message": "Hello World from Flask"})
+def hello_world():
+    return 'Hello World'
 
-@app.route('/env_var_message')
-def env_var_message():
-    logger.info("env_var_message endpoint was called")
-    message = os.getenv('MESSAGE', 'No message set')
-    return jsonify({"message": message})
+@app.route('/message')
+def message():
+    return os.getenv('MESSAGE')
 
-@app.route('/env_var_number')
-def env_var_number():
-    logger.info("env_var_number endpoint was called")
-    number = os.getenv('NUMBER', '0')
-    return jsonify({"number": number})
+@app.route('/number')
+def number():
+    return os.getenv('NUMBER')
 
+# main driver function
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=int(os.getenv('PORT', 8000)), debug=True)
+
+    # run() method of Flask class runs the application 
+    # on the local development server.
+    app.run()
